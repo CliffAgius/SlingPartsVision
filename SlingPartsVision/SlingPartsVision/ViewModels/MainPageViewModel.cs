@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using SlingPartsVision.Models;
 using SlingPartsVision.Services;
 using ZXing;
@@ -11,6 +12,9 @@ namespace SlingPartsVision.ViewModels
     {
         [ObservableProperty]
         string tagID;
+
+        [ObservableProperty]
+        Tag tag;
 
         [ObservableProperty]
         Result[] barcodeResults;
@@ -41,14 +45,23 @@ namespace SlingPartsVision.ViewModels
                         // save the file into local storage
                         string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 
-                        var tag = await TrainingService.TrainingAPI.CreateTagAsync(Globals.ProjectID, TagID);
+                        if (Tag is null)
+                        {
+                            IList<Tag> Tags = await TrainingService.TrainingAPI.GetTagsAsync(Globals.ProjectID);
+
+                            Tag = Tags.FirstOrDefault(x => x.Name == TagID);
+                            if (Tag is null)
+                            {
+                                Tag = await TrainingService.TrainingAPI.CreateTagAsync(Globals.ProjectID, TagID);
+                            }
+                        }
 
                         using (var sourceStream = await photo.OpenReadAsync())
                         {
                             TrainingService.TrainingAPI.CreateImagesFromData(
                                 Globals.ProjectID,
                                 sourceStream,
-                                new List<Guid>() { tag.Id });
+                                new List<Guid>() { Tag.Id });
                         }
                     }
                 }
