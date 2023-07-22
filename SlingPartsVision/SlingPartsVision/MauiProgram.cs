@@ -1,24 +1,55 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Camera.MAUI;
+using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
+using SlingPartsVision.Services;
 
 namespace SlingPartsVision;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            // Initialise the toolkit
+            .UseMauiCommunityToolkit()
+            .UseMauiCameraView()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .RegisterViewModels()
+            .RegisterViews()
+            .RegisterAppServices();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
-	}
+        return builder.Build();
+    }
+
+    public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
+    {
+        //Add the ViewModels...
+        mauiAppBuilder.Services.AddSingleton<ViewModels.MainPageViewModel>();
+
+        return mauiAppBuilder;
+    }
+
+    public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
+    {
+        mauiAppBuilder.Services.AddSingleton<Views.MainPage>();
+
+        return mauiAppBuilder;
+    }
+
+    public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
+    {
+        mauiAppBuilder.Services.AddSingleton<TrainingService>();
+        
+        return mauiAppBuilder;
+    }
 }
