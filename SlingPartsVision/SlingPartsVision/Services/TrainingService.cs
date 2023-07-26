@@ -9,6 +9,8 @@ namespace SlingPartsVision.Services
         public static CustomVisionTrainingClient TrainingAPI;
         public static List<ImageFileCreateEntry> imageFileCreateEntries = new List<ImageFileCreateEntry>();
 
+        public static Tag Tag { get; set; }    
+
         public TrainingService()
         {
             TrainingAPI = AuthenticateTraining(Globals.TrainingEndpoint, Globals.TrainingKey);

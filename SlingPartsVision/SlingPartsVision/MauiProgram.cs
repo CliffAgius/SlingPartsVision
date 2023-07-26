@@ -35,6 +35,7 @@ public static class MauiProgram
     {
         //Add the ViewModels...
         mauiAppBuilder.Services.AddSingleton<ViewModels.MainPageViewModel>();
+        mauiAppBuilder.Services.AddSingleton<ViewModels.CameraPageViewModel>();
 
         return mauiAppBuilder;
     }
@@ -42,6 +43,7 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
     {
         mauiAppBuilder.Services.AddSingleton<Views.MainPage>();
+        mauiAppBuilder.Services.AddSingleton<Views.CameraPage>();
 
         return mauiAppBuilder;
     }

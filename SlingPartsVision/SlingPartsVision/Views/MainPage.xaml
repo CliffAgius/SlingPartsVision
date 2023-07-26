@@ -4,14 +4,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SlingPartsVision.ViewModels">
+
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel />
+    </ContentPage.BindingContext>
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="30,0"
+            Padding="30"
             HorizontalOptions="Fill"
             Spacing="25"
             VerticalOptions="Fill">
+
+            <Label Text="Scan barcode or enter the value in the text entry..." />
 
             <cv:CameraView
                 x:Name="CameraView"
@@ -23,7 +30,7 @@
 
             <Entry Placeholder="Enter Barcode Value" Text="{Binding TagID}" />
 
-            <Button Command="{Binding TakePhotoCommand}" Text="Take Photo!" />
+            <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
         </VerticalStackLayout>
     </ScrollView>
 
