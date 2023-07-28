@@ -40,5 +40,10 @@ namespace SlingPartsVision.Services
                 }
             }
         }
+
+        public static async Task UpdateTag()
+        {
+            Tag = await Task.Run(() => TrainingAPI.GetTag(Globals.ProjectID, Tag.Id));
+        }
     }
 }

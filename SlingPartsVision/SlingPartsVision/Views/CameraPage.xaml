@@ -19,13 +19,36 @@
         VerticalOptions="Fill">
         <Label HorizontalTextAlignment="Center" Text="Take a picture to upload." />
 
-        <Image
+        <cv:CameraView
+            x:Name="CameraView"
+            AutoSnapShotFormat="JPEG"
+            AutoSnapShotSeconds="1"
+            BarCodeDetectionEnabled="False"
+            CamerasLoaded="CameraView_CamerasLoaded"
             HeightRequest="300"
-            Source="{Binding ImageSource}"
+            SnapShotStream="{Binding SnapShotStream}"
+            TakeAutoSnapShot="{Binding TakeSnapShot}"
             WidthRequest="300" />
 
-        <Label FontSize="Medium" Text="{Binding TagName}" />
-        <Label FontSize="Medium" Text="{Binding TagImageCount}" />
+
+        <Border
+            Padding="16,8"
+            Background="#FFFFFF"
+            HorizontalOptions="Fill"
+            Stroke="#569cd6"
+            StrokeShape="RoundRectangle 40,40,40,40"
+            StrokeThickness="2">
+            <Label FontSize="Medium" Text="{Binding TagName, StringFormat='Barcode value - {0}'}" />
+        </Border>
+        <Border
+            Padding="16,8"
+            Background="#FFFFFF"
+            HorizontalOptions="Fill"
+            Stroke="{Binding Stroke}"
+            StrokeShape="RoundRectangle 40,40,40,40"
+            StrokeThickness="2">
+            <Label FontSize="Medium" Text="{Binding TagImageCount, StringFormat='Images with TagID - {0}'}" />
+        </Border>
         <Label
             FontSize="Small"
             Text="Recommended minimum images per tag is 15-20."

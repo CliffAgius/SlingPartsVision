@@ -1,4 +1,5 @@
-﻿using SlingPartsVision.ViewModels;
+﻿using Camera.MAUI;
+using SlingPartsVision.ViewModels;
 
 namespace SlingPartsVision.Views;
 
@@ -22,6 +23,17 @@ public partial class MainPage : ContentPage
                 await CameraView.StartCameraAsync();
             });
         }
+
+        //CameraView.BarCodeOptions = new Camera.MAUI.ZXingHelper.BarcodeDecodeOptions
+        //{
+        //    AutoRotate = true,
+        //    ReadMultipleCodes = false,
+        //    TryHarder = true,
+        //    TryInverted = true
+        //};
+        //CameraView.BarCodeDetectionFrameRate = 10;
+        //CameraView.BarCodeDetectionMaxThreads = 5;
+        //CameraView.ControlBarcodeResultDuplicate = true;
     }
 }
 
