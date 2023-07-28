@@ -18,7 +18,7 @@
             Spacing="25"
             VerticalOptions="Fill">
 
-            <Label Text="Scan barcode or enter the value in the text entry..." />
+            <Label HorizontalTextAlignment="Center" Text="Scan barcode or enter the value in the text entry." />
 
             <cv:CameraView
                 x:Name="CameraView"
@@ -28,9 +28,25 @@
                 HeightRequest="300"
                 WidthRequest="300" />
 
-            <Entry Placeholder="Enter Barcode Value" Text="{Binding TagID}" />
-
-            <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
+            <Border
+                Padding="16,8"
+                Background="#FFFFFF"
+                HorizontalOptions="Fill"
+                Stroke="#569cd6"
+                StrokeShape="RoundRectangle 40,40,40,40"
+                StrokeThickness="2">
+                <Entry
+                    FontSize="Large"
+                    HorizontalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Center"
+                    Placeholder="Enter Barcode Value"
+                    Text="{Binding TagID}"
+                    TextTransform="Uppercase" />
+            </Border>
+            <Button
+                Command="{Binding ConfirmCommand}"
+                Text="Confirm"
+                VerticalOptions="End" />
         </VerticalStackLayout>
     </ScrollView>
 

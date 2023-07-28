@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using SlingPartsVision.Models;
@@ -9,11 +10,22 @@ namespace SlingPartsVision.ViewModels
 {
     public partial class CameraPageViewModel : BaseViewModel, IQueryAttributable
     {
-        string TagID = null;
+        [ObservableProperty]
+        ImageSource imageSource = null;
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        [ObservableProperty]
+        string? tagImageCount;
+
+        [ObservableProperty]
+        string? tagName;
+
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            TagID = HttpUtility.UrlDecode((string)query["Barcode"]);
+            var code = HttpUtility.UrlDecode((string)query["Barcode"]);
+            await TrainingService.CheckTags(code);
+
+            TagName = $"Barcode value - {TrainingService.Tag.Name}";
+            TagImageCount = $"Images with TagID - {TrainingService.Tag.ImageCount.ToString()}";
         }
 
         [RelayCommand]
@@ -30,17 +42,6 @@ namespace SlingPartsVision.ViewModels
                         // save the file into local storage
                         string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
 
-                        if (TrainingService.Tag is null)
-                        {
-                            IList<Tag> Tags = await TrainingService.TrainingAPI.GetTagsAsync(Globals.ProjectID);
-
-                            TrainingService.Tag = Tags.FirstOrDefault(x => x.Name == TagID);
-                            if (TrainingService.Tag is null)
-                            {
-                                TrainingService.Tag = await TrainingService.TrainingAPI.CreateTagAsync(Globals.ProjectID, TagID);
-                            }
-                        }
-
                         using (var sourceStream = await photo.OpenReadAsync())
                         {
                             TrainingService.TrainingAPI.CreateImagesFromData(
@@ -48,6 +49,8 @@ namespace SlingPartsVision.ViewModels
                                 sourceStream,
                                 new List<Guid>() { TrainingService.Tag.Id });
                         }
+
+                        TagImageCount = $"Images with TagID - {TrainingService.Tag.ImageCount.ToString()}";
                     }
                 }
             }

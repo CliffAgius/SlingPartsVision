@@ -28,6 +28,8 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
+        updateHandlers();
+
         return builder.Build();
     }
 
@@ -53,5 +55,15 @@ public static class MauiProgram
         mauiAppBuilder.Services.AddSingleton<TrainingService>();
         
         return mauiAppBuilder;
+    }
+
+    public static void updateHandlers()
+    {
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+        {
+#if ANDROID
+    handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+        });
     }
 }

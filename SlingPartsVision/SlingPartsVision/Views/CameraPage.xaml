@@ -12,29 +12,29 @@
         <vm:CameraPageViewModel />
     </ContentPage.BindingContext>
 
-
-    <VerticalStackLayout>
-        <Label
-            Margin="10"
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-
-        <cv:CameraView
-            x:Name="CameraView"
-            BarCodeDetectionEnabled="True"
-            BarCodeResults="{Binding BarcodeResults}"
-            CamerasLoaded="CameraView_CamerasLoaded"
-            HeightRequest="300"
-            WidthRequest="300" />
-
-        <Button Command="{Binding TakePhotoCommand}" Text="Take Photo!" />
+    <VerticalStackLayout
+        Padding="30"
+        HorizontalOptions="Fill"
+        Spacing="25"
+        VerticalOptions="Fill">
+        <Label HorizontalTextAlignment="Center" Text="Take a picture to upload." />
 
         <Image
             HeightRequest="300"
             Source="{Binding ImageSource}"
             WidthRequest="300" />
 
-        <Label Text="{Binding CountLabel}" />
+        <Label FontSize="Medium" Text="{Binding TagName}" />
+        <Label FontSize="Medium" Text="{Binding TagImageCount}" />
+        <Label
+            FontSize="Small"
+            Text="Recommended minimum images per tag is 15-20."
+            TextColor="{StaticResource Gray400}" />
+
+        <Button
+            Command="{Binding TakePhotoCommand}"
+            Text="Take Photo!"
+            VerticalOptions="End" />
+
     </VerticalStackLayout>
 </ContentPage>

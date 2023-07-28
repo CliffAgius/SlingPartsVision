@@ -9,7 +9,7 @@ namespace SlingPartsVision.Services
         public static CustomVisionTrainingClient TrainingAPI;
         public static List<ImageFileCreateEntry> imageFileCreateEntries = new List<ImageFileCreateEntry>();
 
-        public static Tag Tag { get; set; }    
+        public static Tag Tag { get; set; } = new Tag();
 
         public TrainingService()
         {
@@ -25,6 +25,20 @@ namespace SlingPartsVision.Services
             };
 
             return API;
+        }
+
+        public static async Task CheckTags(string TagID)
+        {
+            if (Tag.Id == Guid.Empty || Tag is null)
+            {
+                IList<Tag> Tags = await TrainingAPI.GetTagsAsync(Globals.ProjectID);
+
+                Tag = Tags.FirstOrDefault(x => x.Name == TagID);
+                if (Tag is null)
+                {
+                    Tag = await TrainingAPI.CreateTagAsync(Globals.ProjectID, TagID);
+                }
+            }
         }
     }
 }
